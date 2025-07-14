@@ -145,8 +145,7 @@ int main(int argc, char** argv){
 
     // Set alarm for 1 hour
     printf("Seting 1 hour time-out\n");
-    //alarm(3600);
-    alarm(5);
+    alarm(3600);
 
     // Record start time
     clock_t start = clock();
