@@ -3,6 +3,13 @@
 #include <ctype.h>
 #include <string.h>
 #include <time.h>
+#include <signal.h>
+#include <unistd.h>
+
+void time_out(int signal){
+    printf("\nExecution time exeded... Time-out Error !!!\n");
+    _exit(1);
+}
 
 // Function to remove whitespace
 void remove_whitespace(char *str){
@@ -43,7 +50,7 @@ char* realoc_buffer(char *str){
     if (resized_buffer == NULL) {
         printf("Failed to reallocate memory\n");
         free(str);
-        return 1;
+        return NULL;
     }
 
     return resized_buffer;
@@ -124,6 +131,14 @@ int main(int argc, char** argv){
     line_a = realoc_buffer(line_a);
     line_b = realoc_buffer(line_b);
 
+    // Register alarm signal
+    signal(SIGALRM, time_out);
+
+    // Set alarm for 1 hour
+    printf("Seting 1 hour time-out\n");
+    //alarm(3600);
+    alarm(5);
+
     // Record start time
     clock_t start = clock();
 
@@ -133,6 +148,9 @@ int main(int argc, char** argv){
     // Record end time
     clock_t end = clock();
 
+    // Turn off alarm
+    alarm(0);
+
     // Calculate time taken
     double time_taken = ((double) (end - start)) / CLOCKS_PER_SEC;
 
@@ -141,6 +159,7 @@ int main(int argc, char** argv){
     free(line_b);
 
     printf("%f\n", time_taken);
+
     
     return 0;
 }
