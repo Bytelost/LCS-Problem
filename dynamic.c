@@ -186,6 +186,11 @@ int main(int argc, char** argv){
     free(line_b);
 
     printf("%f\n", time_taken);
+
+    // Save the result of execution in a file
+    file = fopen("dp_result.txt", "a+");
+    fprintf(file, "%f\n", time_taken);
+    fclose(file);
     
     return 0;
 }
