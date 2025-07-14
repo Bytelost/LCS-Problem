@@ -6,8 +6,17 @@
 #include <signal.h>
 #include <unistd.h>
 
+// Funtior to quit execution if there a time out
 void time_out(int signal){
     printf("\nExecution time exeded... Time-out Error !!!\n");
+
+    // Save time out in the file
+    FILE *file;
+    file = fopen("rec_result.txt", "a+");
+    fprintf(file, "%d\n", -1);
+    fclose(file);
+
+    // Exit code
     _exit(1);
 }
 
