@@ -140,8 +140,8 @@ int main(int argc, char** argv){
     remove_whitespace(line_b);
 
     // Realocate buffer sizes for the new string length
-    //line_a = realoc_buffer(line_a);
-    //line_b = realoc_buffer(line_b);
+    line_a = realoc_buffer(line_a);
+    line_b = realoc_buffer(line_b);
 
     // Record start time
     clock_t start = clock();
