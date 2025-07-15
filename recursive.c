@@ -143,34 +143,49 @@ int main(int argc, char** argv){
     // Register alarm signal
     signal(SIGALRM, time_out);
 
-    // Set alarm for 1 hour
-    printf("Seting 1 hour time-out\n");
-    alarm(3600);
+    // Buffer to save the time taken
+    double time_taken[6];
 
-    // Record start time
-    clock_t start = clock();
+    // Execute the LCS six times and save the time taken
+    for(int i=0; i<6; i++){
 
-    // Call LCS function
-    int aux = lcs_rec(line_a, line_b, strlen(line_a), strlen(line_b));
+        // Set alarm for 1 hour
+        printf("Seting 1 hour time-out\n");
+        alarm(3600);
+    
+        // Record start time
+        clock_t start = clock();
+    
+        // Call LCS function
+        int aux = lcs_rec(line_a, line_b, strlen(line_a), strlen(line_b));
+    
+        // Record end time
+        clock_t end = clock();
+    
+        // Turn off alarm
+        alarm(0);
+    
+        // Calculate time taken
+        time_taken[i] = ((double) (end - start)) / CLOCKS_PER_SEC;
 
-    // Record end time
-    clock_t end = clock();
-
-    // Turn off alarm
-    alarm(0);
-
-    // Calculate time taken
-    double time_taken = ((double) (end - start)) / CLOCKS_PER_SEC;
+    }
 
     // Free the alocated lines before finishing the algorithm
     free(line_a);
     free(line_b);
 
-    printf("%f\n", time_taken);
+    // Calculate average time
+    double av_time = 0;
+    for(int i=0; i<6; i++){
+        av_time += time_taken[i];
+    }
+    av_time = av_time / 5;
+
+    printf("%f\n", av_time);
 
     // Save the result of execution in a file
     file = fopen("rec_result.txt", "a+");
-    fprintf(file, "%f\n", time_taken);
+    fprintf(file, "%f\n", av_time);
     fclose(file);
     
     return 0;
