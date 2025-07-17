@@ -6,20 +6,6 @@
 #include <signal.h>
 #include <unistd.h>
 
-// Funtior to quit execution if there a time out
-void time_out(int signal){
-    printf("\nExecution time exeded... Time-out Error !!!\n");
-
-    // Save time out in the file
-    FILE *file;
-    file = fopen("rec_result.txt", "a+");
-    fprintf(file, "%d\n", -1);
-    fclose(file);
-
-    // Exit code
-    _exit(1);
-}
-
 // Function to remove whitespace
 void remove_whitespace(char *str){
 
@@ -158,18 +144,12 @@ int main(int argc, char** argv){
     // Realocate buffer sizes for the new string length
     line_a = realoc_buffer(line_a);
     line_b = realoc_buffer(line_b);
-
-    // Register alarm signal
-    signal(SIGALRM, time_out);
     
     // Buffer to save the time taken
     double time_taken[6];
 
     // Execute the LCS six times and save the time taken
     for(int i=0; i<6; i++){
-
-        // Set alarm for 1 hour
-        alarm(3600);
 
         // Record start time
         clock_t start = clock();
@@ -181,9 +161,6 @@ int main(int argc, char** argv){
         clock_t end = clock();
 
         time_taken[i] = ((double) (end - start)) / CLOCKS_PER_SEC;
-    
-        // Turn off alarm
-        alarm(0);
     }
 
     // Free the alocated lines before finishing the algorithm
